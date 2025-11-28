@@ -24,7 +24,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 72px;
+  height: 80px;
   background: #0033aa;
   display: flex;
   justify-content: center;
@@ -35,25 +35,23 @@ body {
 
 .header-inner {
   width: 100%;
-  max-width: 100%;       /* 🔥 Que use el ancho completo */
+  max-width: 1350px;      /* 🔥 Mantiene todo centrado bonito */
   padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 12px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1;
+  gap: 20px;
 }
 
 .logo {
-  width: 86px;
-  height: 46px;
-  object-fit: cover;
-  border-radius: 3px;
+  height: 48px;           /* 🔥 Tamaño perfecto para header */
+  width: auto;
+}
+
+.title {
+  font-size: 26px;        /* 🔥 Más elegante */
+  font-weight: 700;
+  line-height: 1;
 }
 
 /* ===== Saldo ===== */
