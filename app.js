@@ -133,7 +133,6 @@ window.addEventListener("firestoreMovements", (e) => {
 });
 
 
-
 // =======================================================
 // 📲 WhatsApp — ABRIR SIN NÚMERO, SOLO MENSAJE
 // =======================================================
