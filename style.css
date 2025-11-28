@@ -27,31 +27,41 @@ body {
   height: 80px;
   background: #0033aa;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center; /* 🔥 centrar contenido principal */
   color: white;
   z-index: 999;
 }
 
+/* Contenedor interno */
 .header-inner {
+  position: relative;
   width: 100%;
-  max-width: 1350px;      /* 🔥 Mantiene todo centrado bonito */
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 20px;
+  max-width: 1350px;
+  height: 100%;
 }
 
+/* Logo alineado totalmente a la izquierda */
 .logo {
-  height: 48px;           /* 🔥 Tamaño perfecto para header */
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 48px;
   width: auto;
 }
 
+/* Título centrado REAL (no se mueve por el logo) */
 .title {
-  font-size: 26px;        /* 🔥 Más elegante */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 26px;
   font-weight: 700;
-  line-height: 1;
+  text-align: center;
+  width: 100%;
+  pointer-events: none; /* Evita que interfiera con el logo */
 }
 
 /* ===== Saldo ===== */
