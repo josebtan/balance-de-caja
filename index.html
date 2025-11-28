@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Balance de Caja</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="logo.png" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <h1 class="title">Balance de Caja</h1>
+      <img src="logo.png" class="logo" alt="Logo Balance de Caja" />
+    </div>
+  </header>
+
+  <!-- CONTENIDO -->
+  <main class="container">
+
+    <section class="saldo-card">
+      <h2>Saldo actual</h2>
+      <p id="saldo" class="saldo-valor saldo-positivo">$0</p>
+    </section>
+
+    <section class="section-box">
+      <h2>Registrar Movimiento</h2>
+
+      <div class="form-row">
+        <div class="inputs-col">
+          <input type="text" inputmode="numeric" placeholder="Monto" id="monto" class="small-input" />
+          <input type="text" placeholder="Detalle" id="detalle" class="small-input" />
+        </div>
+
+        <div class="button-box">
+          <button id="btnIngreso" class="btn ingreso">Ingreso</button>
+          <button id="btnGasto" class="btn gasto">Gasto</button>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="section-box">
+  <h2>Historial</h2>
+
+  <div class="tabla">
+    <div class="tabla-header">
+      <span>Fecha</span>
+      <span>Tipo</span>
+      <span>Detalle</span>
+      <span>Monto</span>
+    </div>
+
+    <ul id="historial" class="tabla-body"></ul>
+  </div>
+</section>
+
+  </main>
+
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="app.js"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js").catch(()=>{});
+    }
+  </script>
+
+</body>
+</html>

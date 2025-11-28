@@ -1,0 +1,22 @@
+{
+  "name": "Balance de Caja",
+  "short_name": "Caja",
+  "description": "App offline para gestionar caja menor, ingresos, gastos y envío por WhatsApp",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "theme_color": "#0033aa",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "190x135",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "190x135",
+      "type": "image/png"
+    }
+  ]
+}

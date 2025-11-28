@@ -1,0 +1,210 @@
+/* ===== Reset ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html,body { height: 100%; width: 100%; }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: white;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  color: #1a1a1a;
+}
+
+/* ===== Contenedor ===== */
+.container {
+  width: 100%;
+  max-width: 100%;       /* 🔥 Antes 430px → ahora ocupa todo el ancho */
+  padding: 20px;
+  margin-top: 88px;
+}
+
+/* ===== Header ===== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  background: #0033aa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  z-index: 999;
+}
+
+.header-inner {
+  width: 100%;
+  max-width: 100%;       /* 🔥 Que use el ancho completo */
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.logo {
+  width: 86px;
+  height: 46px;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+/* ===== Saldo ===== */
+.saldo-card {
+  background: #f4f4f4;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 18px;
+  text-align: center;
+  border-left: 5px solid #0033aa;
+}
+
+.saldo-card h2 { font-size: 14px; color: #0033aa; margin-bottom: 6px; }
+.saldo-valor { font-size: 26px; font-weight: 700; }
+
+.saldo-positivo { color: #1f8f2f; }
+.saldo-negativo { color: #d93939; }
+
+/* ===== Caja Sección ===== */
+.section-box {
+  background: #fff;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #e8eefc;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+}
+
+.section-box h2 {
+  font-size: 15px;
+  color: #0033aa;
+  margin-bottom: 10px;
+}
+
+/* ===== FORMULARIO ===== */
+.form-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.inputs-col {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.small-input {
+  height: 34px;
+  padding: 6px 8px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #cddaf8;
+}
+
+/* Botones */
+.button-box {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn {
+  height: 32px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ingreso { background: #1f8f2f; }
+.gasto   { background: #d93939; }
+
+/* ===== TABLA HISTORIAL ===== */
+.tabla {
+  width: 100%;
+  border: 1px solid #d5dfff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabla-header {
+  display: grid;
+  grid-template-columns: 100px 70px 1fr 80px;
+  column-gap: 20px;
+  background: #0033aa;
+  color: white;
+  font-weight: 700;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.tabla-body {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tabla-row {
+  display: grid;
+  grid-template-columns: 100px 70px 1fr 80px;
+  column-gap: 20px;
+  padding: 10px 10px;
+  font-size: 14px;
+  border-bottom: 1px solid #e4e8ff;
+}
+
+.tabla-row:last-child {
+  border-bottom: none;
+}
+
+.tabla-row span {
+  display: flex;
+  align-items: center;
+}
+
+.tipo-verde { color: #1f8f2f; font-weight: 700; }
+.tipo-rojo  { color: #d93939; font-weight: 700; }
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+
+  body { justify-content: flex-start; } /* 🔥 En móviles, no centrar: usar pantalla completa */
+
+  .container {
+    padding: 15px;
+    width: 100%;
+    max-width: 100%; /* Garantiza que siempre ocupe el ancho total */
+  }
+
+  .header-inner {
+    padding: 0 14px;
+  }
+
+  /* Columnas más compactas */
+  .tabla-header,
+  .tabla-row {
+    grid-template-columns: 80px 60px 1fr 70px; /* 🔥 Ajustado para pantallas pequeñas */
+    column-gap: 10px;
+    font-size: 13px;
+  }
+
+  .small-input { font-size: 13px; }
+  .btn        { font-size: 13px; height: 30px; }
+}
