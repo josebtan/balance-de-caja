@@ -149,5 +149,6 @@ function enviarWhatsApp(saldoAnterior, monto, saldoNuevo, tipo, detalle) {
   // URL sin número → permite elegir contacto
   const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
 
-  window.open(url, "_blank");
+  window.location.href = url;
+
 }
