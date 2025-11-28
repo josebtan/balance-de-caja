@@ -33,7 +33,7 @@ function limpiarFormato(valor) {
 
 
 // =======================================================
-// ➕➖ REGISTRAR INGRESO / GASTO + LLAMAR WHATSAPP
+// ➕➖ REGISTRAR INGRESO / GASTO + WHATSAPP ADELANTADO
 // =======================================================
 async function registrar(esIngreso) {
 
@@ -66,15 +66,31 @@ async function registrar(esIngreso) {
   const saldoAnterior = saldo;
   const saldoNuevo = esIngreso ? saldoAnterior + monto : saldoAnterior - monto;
 
-  // === Guardar en Firestore ===
+  // =====================================================
+  // 📲 ABRIR WHATSAPP ANTES DE GUARDAR (GitHub Pages)
+  // =====================================================
+  const simbolo = esIngreso ? "+" : "-";
+
+  const msg =
+    `📌 *${tipo} registrado*\n\n` +
+    `💵 *Saldo anterior:* $${formatoMiles(saldoAnterior)}\n` +
+    `🔄 *Movimiento:* ${simbolo}$${formatoMiles(monto)}\n` +
+    `📝 *Detalle:* ${detalle}\n\n` +
+    `📊 *Nuevo saldo:* $${formatoMiles(saldoNuevo)}`;
+
+  const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+
+  // Acción directa → GitHub Pages NO lo bloquea
+  window.location.href = url;
+
+  // =====================================================
+  // 🔥 AHORA SÍ GUARDAR EN FIRESTORE
+  // =====================================================
   await saveMovementToFirestore({
     tipo,
     monto,
     detalle
   });
-
-  // === Abrir WhatsApp ===
-  enviarWhatsApp(saldoAnterior, monto, saldoNuevo, tipo, detalle);
 
   montoEl.value = "";
   detalleEl.value = "";
@@ -131,24 +147,3 @@ window.addEventListener("firestoreMovements", (e) => {
     historialEl.appendChild(li);
   });
 });
-
-
-// =======================================================
-// 📲 WhatsApp — ABRIR SIN NÚMERO, SOLO MENSAJE
-// =======================================================
-function enviarWhatsApp(saldoAnterior, monto, saldoNuevo, tipo, detalle) {
-  const simbolo = tipo === "Ingreso" ? "+" : "-";
-
-  const msg =
-    `📌 *${tipo} registrado*\n\n` +
-    `💵 *Saldo anterior:* $${formatoMiles(saldoAnterior)}\n` +
-    `🔄 *Movimiento:* ${simbolo}$${formatoMiles(monto)}\n` +
-    `📝 *Detalle:* ${detalle}\n\n` +
-    `📊 *Nuevo saldo:* $${formatoMiles(saldoNuevo)}`;
-
-  // URL sin número → permite elegir contacto
-  const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
-
-  window.location.href = url;
-
-}
