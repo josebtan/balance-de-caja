@@ -32,9 +32,8 @@ function limpiarFormato(valor) {
 
 
 
-
 // =======================================================
-// ➕➖ REGISTRAR INGRESO / GASTO
+// ➕➖ REGISTRAR INGRESO / GASTO + LLAMAR WHATSAPP
 // =======================================================
 async function registrar(esIngreso) {
 
@@ -54,9 +53,7 @@ async function registrar(esIngreso) {
 
   let detalle = detalleEl.value.trim();
 
-  if (esIngreso && detalle === "") {
-    detalle = "Sin detalle";
-  }
+  if (esIngreso && detalle === "") detalle = "Sin detalle";
 
   if (!esIngreso && detalle === "") {
     alert("El detalle del gasto es obligatorio.");
@@ -65,11 +62,19 @@ async function registrar(esIngreso) {
 
   const tipo = esIngreso ? "Ingreso" : "Salida";
 
+  // === saldo anterior antes del movimiento ===
+  const saldoAnterior = saldo;
+  const saldoNuevo = esIngreso ? saldoAnterior + monto : saldoAnterior - monto;
+
+  // === Guardar en Firestore ===
   await saveMovementToFirestore({
     tipo,
     monto,
     detalle
   });
+
+  // === Abrir WhatsApp ===
+  enviarWhatsApp(saldoAnterior, monto, saldoNuevo, tipo, detalle);
 
   montoEl.value = "";
   detalleEl.value = "";
@@ -130,10 +135,9 @@ window.addEventListener("firestoreMovements", (e) => {
 
 
 // =======================================================
-// 📲 WhatsApp (OPCIONAL)
+// 📲 WhatsApp — ABRIR SIN NÚMERO, SOLO MENSAJE
 // =======================================================
 function enviarWhatsApp(saldoAnterior, monto, saldoNuevo, tipo, detalle) {
-  const numero = "NUMERO_AQUI";
   const simbolo = tipo === "Ingreso" ? "+" : "-";
 
   const msg =
@@ -143,6 +147,8 @@ function enviarWhatsApp(saldoAnterior, monto, saldoNuevo, tipo, detalle) {
     `📝 *Detalle:* ${detalle}\n\n` +
     `📊 *Nuevo saldo:* $${formatoMiles(saldoNuevo)}`;
 
-  const url = `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
+  // URL sin número → permite elegir contacto
+  const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+
   window.open(url, "_blank");
 }
