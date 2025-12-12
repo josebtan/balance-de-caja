@@ -1,5 +1,5 @@
 // =======================================================
-// APP.JS — Formato de miles en input + cálculos sin centavos
+// APP.JS — Versión con checkbox para WhatsApp
 // =======================================================
 
 import { saveMovementToFirestore } from "./firebase.js";
@@ -11,6 +11,7 @@ const saldoEl = document.getElementById("saldo");
 const historialEl = document.getElementById("historial");
 const montoEl = document.getElementById("monto");
 const detalleEl = document.getElementById("detalle");
+const chkWhatsapp = document.getElementById("chkWhatsapp");
 
 document.getElementById("btnIngreso").addEventListener("click", () => registrar(true));
 document.getElementById("btnGasto").addEventListener("click", () => registrar(false));
@@ -25,7 +26,6 @@ function formatoMiles(num) {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
-// Quitar puntos → número crudo
 function limpiarFormato(valor) {
   return valor.replace(/\./g, "");
 }
@@ -33,7 +33,7 @@ function limpiarFormato(valor) {
 
 
 // =======================================================
-// ➕➖ REGISTRAR INGRESO / GASTO + WHATSAPP ADELANTADO
+// ➕➖ REGISTRAR INGRESO / GASTO + WHATSAPP OPCIONAL
 // =======================================================
 async function registrar(esIngreso) {
 
@@ -49,7 +49,7 @@ async function registrar(esIngreso) {
     return;
   }
 
-  monto = Math.round(monto); // sin centavos
+  monto = Math.round(monto);
 
   let detalle = detalleEl.value.trim();
 
@@ -62,29 +62,29 @@ async function registrar(esIngreso) {
 
   const tipo = esIngreso ? "Ingreso" : "Salida";
 
-  // === saldo anterior antes del movimiento ===
   const saldoAnterior = saldo;
   const saldoNuevo = esIngreso ? saldoAnterior + monto : saldoAnterior - monto;
 
   // =====================================================
-  // 📲 ABRIR WHATSAPP ANTES DE GUARDAR (GitHub Pages)
+  // 📲 ENVÍO OPCIONAL POR WHATSAPP
   // =====================================================
-  const simbolo = esIngreso ? "+" : "-";
+  if (chkWhatsapp.checked) {
+    const simbolo = esIngreso ? "+" : "-";
 
-  const msg =
-    `📌 *${tipo} registrado*\n\n` +
-    `💵 *Saldo anterior:* $${formatoMiles(saldoAnterior)}\n` +
-    `🔄 *Movimiento:* ${simbolo}$${formatoMiles(monto)}\n` +
-    `📝 *Detalle:* ${detalle}\n\n` +
-    `📊 *Nuevo saldo:* $${formatoMiles(saldoNuevo)}`;
+    const msg =
+      `📌 *${tipo} registrado*\n\n` +
+      `💵 *Saldo anterior:* $${formatoMiles(saldoAnterior)}\n` +
+      `🔄 *Movimiento:* ${simbolo}$${formatoMiles(monto)}\n` +
+      `📝 *Detalle:* ${detalle}\n\n` +
+      `📊 *Nuevo saldo:* $${formatoMiles(saldoNuevo)}`;
 
-  const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+    const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
 
-  // Acción directa → GitHub Pages NO lo bloquea
-  window.location.href = url;
+    window.location.href = url;
+  }
 
   // =====================================================
-  // 🔥 AHORA SÍ GUARDAR EN FIRESTORE
+  // 🔥 GUARDAR EN FIRESTORE
   // =====================================================
   await saveMovementToFirestore({
     tipo,
@@ -118,7 +118,6 @@ function actualizarSaldo() {
 window.addEventListener("firestoreMovements", (e) => {
   const datos = e.detail;
 
-  // === calcular saldo ===
   saldo = datos.reduce((total, mov) => {
     const monto = parseInt(mov.monto) || 0;
     return mov.tipo === "Ingreso" ? total + monto : total - monto;
@@ -126,7 +125,6 @@ window.addEventListener("firestoreMovements", (e) => {
 
   actualizarSaldo();
 
-  // === render historial ===
   historialEl.innerHTML = "";
 
   datos.forEach((mov) => {

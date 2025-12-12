@@ -29,21 +29,26 @@
     </section>
 
     <section class="section-box">
-      <h2>Registrar Movimiento</h2>
+  <h2>Registrar Movimiento</h2>
 
-      <div class="form-row">
-        <div class="inputs-col">
-          <input type="text" inputmode="numeric" placeholder="Monto" id="monto" class="small-input" />
-          <input type="text" placeholder="Detalle" id="detalle" class="small-input" />
-        </div>
+  <!-- ✔️ CHECKBOX EN SU PROPIA FILA -->
+  <label class="check-label" style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+    <input type="checkbox" id="chkWhatsapp" checked>
+    Enviar registro por WhatsApp
+  </label>
 
-        <div class="button-box">
-          <button id="btnIngreso" class="btn ingreso">Ingreso</button>
-          <button id="btnGasto" class="btn gasto">Gasto</button>
-        </div>
-      </div>
+  <div class="form-row">
+    <div class="inputs-col">
+      <input type="text" inputmode="numeric" placeholder="Monto" id="monto" class="small-input" />
+      <input type="text" placeholder="Detalle" id="detalle" class="small-input" />
+    </div>
 
-    </section>
+    <div class="button-box">
+      <button id="btnIngreso" class="btn ingreso">Ingreso</button>
+      <button id="btnGasto" class="btn gasto">Gasto</button>
+    </div>
+  </div>
+</section>
 
     <section class="section-box">
   <h2>Historial</h2>
