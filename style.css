@@ -1,6 +1,14 @@
 /* ===== Reset ===== */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; width: 100%; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
 
 body {
   font-family: Arial, Helvetica, sans-serif;
@@ -16,52 +24,52 @@ body {
   width: 100%;
   max-width: 100%;
   padding: 20px;
-  margin-top: 88px;
+  margin-top: 96px; /* acorde al header */
 }
 
-/* ===== Header ===== */
+/* ======================================================
+   HEADER — Mejorado (Desktop + Mobile)
+====================================================== */
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 80px;
-  background: #0033aa;
+  height: 88px;
+  background: linear-gradient(135deg, #0033aa, #001f66);
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.header-inner {
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 24px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: white;
-  z-index: 999;
-}
-
-/* Contenedor interno */
-.header-inner {
   position: relative;
-  width: 100%;
-  max-width: 1350px;
-  height: 100%;
 }
 
-/* Logo alineado a la izquierda */
+/* Logo */
 .logo {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
   height: 48px;
   width: auto;
+  flex-shrink: 0;
 }
 
 /* Título centrado real */
 .title {
   position: absolute;
-  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   font-size: 26px;
   font-weight: 700;
+  color: white;
+  letter-spacing: 0.4px;
   text-align: center;
-  width: 100%;
+  white-space: nowrap;
   pointer-events: none;
 }
 
@@ -162,29 +170,6 @@ body {
 .ingreso { background: #1f8f2f; }
 .gasto   { background: #d93939; }
 
-/* ===== Paginación ===== */
-.paginacion {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.paginacion button {
-  padding: 6px 10px;
-  font-size: 13px;
-  border-radius: 6px;
-  border: 1px solid #cddaf8;
-  background: #f4f6ff;
-  cursor: pointer;
-}
-
-.paginacion button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 /* ===== TABLA HISTORIAL ===== */
 .tabla {
   width: 100%;
@@ -231,34 +216,7 @@ body {
 .tipo-verde { color: #1f8f2f; font-weight: 700; }
 .tipo-rojo  { color: #d93939; font-weight: 700; }
 
-/* ===== Responsive ===== */
-@media (max-width: 480px) {
-
-  body {
-    justify-content: flex-start;
-  }
-
-  .container {
-    padding: 15px;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .header-inner {
-    padding: 0 14px;
-  }
-
-  .tabla-header,
-  .tabla-row {
-    grid-template-columns: 80px 60px 1fr 70px;
-    column-gap: 10px;
-    font-size: 13px;
-  }
-
-  .small-input { font-size: 13px; }
-  .btn { font-size: 13px; height: 30px; }
-}
-
+/* ===== PAGINACIÓN ===== */
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -286,4 +244,45 @@ body {
   font-weight: 700;
   font-size: 13px;
   color: #0033aa;
+}
+
+/* ======================================================
+   MOBILE
+====================================================== */
+@media (max-width: 768px) {
+
+  body {
+    justify-content: flex-start;
+  }
+
+  .header {
+    height: 64px;
+  }
+
+  .header-inner {
+    padding: 0 14px;
+  }
+
+  .logo {
+    height: 34px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .container {
+    margin-top: 72px;
+    padding: 15px;
+  }
+
+  .tabla-header,
+  .tabla-row {
+    grid-template-columns: 80px 60px 1fr 70px;
+    column-gap: 10px;
+    font-size: 13px;
+  }
+
+  .small-input { font-size: 13px; }
+  .btn { font-size: 13px; height: 30px; }
 }
