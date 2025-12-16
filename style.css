@@ -1,6 +1,7 @@
 /* ===== Reset ===== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html,body { height: 100%; width: 100%; }
+html, body { height: 100%; width: 100%; }
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   background: white;
@@ -13,7 +14,7 @@ body {
 /* ===== Contenedor ===== */
 .container {
   width: 100%;
-  max-width: 100%;       /* 🔥 Antes 430px → ahora ocupa todo el ancho */
+  max-width: 100%;
   padding: 20px;
   margin-top: 88px;
 }
@@ -28,7 +29,7 @@ body {
   background: #0033aa;
   display: flex;
   align-items: center;
-  justify-content: center; /* 🔥 centrar contenido principal */
+  justify-content: center;
   color: white;
   z-index: 999;
 }
@@ -41,7 +42,7 @@ body {
   height: 100%;
 }
 
-/* Logo alineado totalmente a la izquierda */
+/* Logo alineado a la izquierda */
 .logo {
   position: absolute;
   left: 20px;
@@ -51,7 +52,7 @@ body {
   width: auto;
 }
 
-/* Título centrado REAL (no se mueve por el logo) */
+/* Título centrado real */
 .title {
   position: absolute;
   top: 50%;
@@ -61,7 +62,7 @@ body {
   font-weight: 700;
   text-align: center;
   width: 100%;
-  pointer-events: none; /* Evita que interfiera con el logo */
+  pointer-events: none;
 }
 
 /* ===== Saldo ===== */
@@ -74,8 +75,16 @@ body {
   border-left: 5px solid #0033aa;
 }
 
-.saldo-card h2 { font-size: 14px; color: #0033aa; margin-bottom: 6px; }
-.saldo-valor { font-size: 26px; font-weight: 700; }
+.saldo-card h2 {
+  font-size: 14px;
+  color: #0033aa;
+  margin-bottom: 6px;
+}
+
+.saldo-valor {
+  font-size: 26px;
+  font-weight: 700;
+}
 
 .saldo-positivo { color: #1f8f2f; }
 .saldo-negativo { color: #d93939; }
@@ -94,6 +103,15 @@ body {
   font-size: 15px;
   color: #0033aa;
   margin-bottom: 10px;
+}
+
+/* ===== Checkbox WhatsApp ===== */
+.check-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 14px;
 }
 
 /* ===== FORMULARIO ===== */
@@ -144,6 +162,29 @@ body {
 .ingreso { background: #1f8f2f; }
 .gasto   { background: #d93939; }
 
+/* ===== Paginación ===== */
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.paginacion button {
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 6px;
+  border: 1px solid #cddaf8;
+  background: #f4f6ff;
+  cursor: pointer;
+}
+
+.paginacion button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ===== TABLA HISTORIAL ===== */
 .tabla {
   width: 100%;
@@ -193,26 +234,56 @@ body {
 /* ===== Responsive ===== */
 @media (max-width: 480px) {
 
-  body { justify-content: flex-start; } /* 🔥 En móviles, no centrar: usar pantalla completa */
+  body {
+    justify-content: flex-start;
+  }
 
   .container {
     padding: 15px;
     width: 100%;
-    max-width: 100%; /* Garantiza que siempre ocupe el ancho total */
+    max-width: 100%;
   }
 
   .header-inner {
     padding: 0 14px;
   }
 
-  /* Columnas más compactas */
   .tabla-header,
   .tabla-row {
-    grid-template-columns: 80px 60px 1fr 70px; /* 🔥 Ajustado para pantallas pequeñas */
+    grid-template-columns: 80px 60px 1fr 70px;
     column-gap: 10px;
     font-size: 13px;
   }
 
   .small-input { font-size: 13px; }
-  .btn        { font-size: 13px; height: 30px; }
+  .btn { font-size: 13px; height: 30px; }
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #0033aa;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background: #9fb3e6;
+  cursor: not-allowed;
+}
+
+#lblSemana {
+  font-weight: 700;
+  font-size: 13px;
+  color: #0033aa;
 }

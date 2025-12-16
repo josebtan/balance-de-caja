@@ -1,10 +1,12 @@
 // =======================================================
-// APP.JS — Versión con checkbox para WhatsApp
+// APP.JS — Historial paginado por semanas
 // =======================================================
 
 import { saveMovementToFirestore } from "./firebase.js";
 
 let saldo = 0;
+let todosLosMovimientos = [];
+let semanaActualOffset = 0;
 
 // Elementos
 const saldoEl = document.getElementById("saldo");
@@ -13,12 +15,27 @@ const montoEl = document.getElementById("monto");
 const detalleEl = document.getElementById("detalle");
 const chkWhatsapp = document.getElementById("chkWhatsapp");
 
+const btnPrev = document.getElementById("btnPrev");
+const btnNext = document.getElementById("btnNext");
+const lblSemana = document.getElementById("lblSemana");
+
 document.getElementById("btnIngreso").addEventListener("click", () => registrar(true));
 document.getElementById("btnGasto").addEventListener("click", () => registrar(false));
 
+btnPrev.addEventListener("click", () => {
+  semanaActualOffset--;
+  renderSemana();
+});
+
+btnNext.addEventListener("click", () => {
+  if (semanaActualOffset < 0) {
+    semanaActualOffset++;
+    renderSemana();
+  }
+});
 
 // =======================================================
-// 🔢 FORMATO MILES (1.234.567)
+// 🔢 FORMATO
 // =======================================================
 function formatoMiles(num) {
   num = Number(num);
@@ -30,118 +47,103 @@ function limpiarFormato(valor) {
   return valor.replace(/\./g, "");
 }
 
-
-
 // =======================================================
-// ➕➖ REGISTRAR INGRESO / GASTO + WHATSAPP OPCIONAL
+// ➕➖ REGISTRAR MOVIMIENTO
 // =======================================================
 async function registrar(esIngreso) {
-
-  if (!montoEl.value.trim()) {
-    alert("Ingresa un monto válido.");
-    return;
-  }
+  if (!montoEl.value.trim()) return alert("Ingresa un monto válido.");
 
   let monto = parseInt(limpiarFormato(montoEl.value));
-
-  if (isNaN(monto) || monto <= 0) {
-    alert("Ingresa un monto válido.");
-    return;
-  }
-
-  monto = Math.round(monto);
+  if (isNaN(monto) || monto <= 0) return alert("Monto inválido.");
 
   let detalle = detalleEl.value.trim();
-
-  if (esIngreso && detalle === "") detalle = "Sin detalle";
-
-  if (!esIngreso && detalle === "") {
-    alert("El detalle del gasto es obligatorio.");
-    return;
-  }
+  if (!esIngreso && !detalle) return alert("El detalle del gasto es obligatorio.");
+  if (esIngreso && !detalle) detalle = "Sin detalle";
 
   const tipo = esIngreso ? "Ingreso" : "Salida";
+  const saldoNuevo = esIngreso ? saldo + monto : saldo - monto;
 
-  const saldoAnterior = saldo;
-  const saldoNuevo = esIngreso ? saldoAnterior + monto : saldoAnterior - monto;
-
-  // =====================================================
-  // 📲 ENVÍO OPCIONAL POR WHATSAPP
-  // =====================================================
   if (chkWhatsapp.checked) {
     const simbolo = esIngreso ? "+" : "-";
-
     const msg =
       `📌 *${tipo} registrado*\n\n` +
-      `💵 *Saldo anterior:* $${formatoMiles(saldoAnterior)}\n` +
-      `🔄 *Movimiento:* ${simbolo}$${formatoMiles(monto)}\n` +
-      `📝 *Detalle:* ${detalle}\n\n` +
+      `💵 *Movimiento:* ${simbolo}$${formatoMiles(monto)}\n` +
+      `📝 *Detalle:* ${detalle}\n` +
       `📊 *Nuevo saldo:* $${formatoMiles(saldoNuevo)}`;
 
-    const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
-
-    window.location.href = url;
+    window.location.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
   }
 
-  // =====================================================
-  // 🔥 GUARDAR EN FIRESTORE
-  // =====================================================
-  await saveMovementToFirestore({
-    tipo,
-    monto,
-    detalle
-  });
+  await saveMovementToFirestore({ tipo, monto, detalle });
 
   montoEl.value = "";
   detalleEl.value = "";
 }
 
-
-
 // =======================================================
-// 💰 ACTUALIZAR SALDO
+// 💰 SALDO
 // =======================================================
 function actualizarSaldo() {
   saldoEl.textContent = "$" + formatoMiles(saldo);
-
-  saldoEl.classList.remove("saldo-positivo", "saldo-negativo");
-  saldo >= 0
-    ? saldoEl.classList.add("saldo-positivo")
-    : saldoEl.classList.add("saldo-negativo");
+  saldoEl.className = saldo >= 0 ? "saldo-valor saldo-positivo" : "saldo-valor saldo-negativo";
 }
 
-
-
 // =======================================================
-// 📋 RECIBIR HISTORIAL EN TIEMPO REAL
+// 📆 UTILIDADES DE FECHA
 // =======================================================
-window.addEventListener("firestoreMovements", (e) => {
-  const datos = e.detail;
+function getSemanaRango(offset) {
+  const hoy = new Date();
+  const inicio = new Date(hoy);
+  inicio.setDate(hoy.getDate() - hoy.getDay() + offset * 7);
+  inicio.setHours(0, 0, 0, 0);
 
-  saldo = datos.reduce((total, mov) => {
-    const monto = parseInt(mov.monto) || 0;
-    return mov.tipo === "Ingreso" ? total + monto : total - monto;
-  }, 0);
+  const fin = new Date(inicio);
+  fin.setDate(inicio.getDate() + 6);
+  fin.setHours(23, 59, 59, 999);
 
-  actualizarSaldo();
+  return { inicio, fin };
+}
+
+function renderSemana() {
+  const { inicio, fin } = getSemanaRango(semanaActualOffset);
+
+  lblSemana.textContent =
+    `${inicio.toLocaleDateString()} - ${fin.toLocaleDateString()}`;
 
   historialEl.innerHTML = "";
 
-  datos.forEach((mov) => {
-    const fecha = mov.createdAt?.toDate
-      ? mov.createdAt.toDate().toLocaleString()
-      : "—";
+  const filtrados = todosLosMovimientos.filter(m => {
+    const fecha = m.createdAt?.toDate?.();
+    return fecha && fecha >= inicio && fecha <= fin;
+  });
 
+  filtrados.forEach(mov => {
     const li = document.createElement("li");
-    li.classList.add("tabla-row");
+    li.className = "tabla-row";
 
     li.innerHTML = `
-      <span>${fecha}</span>
+      <span>${mov.createdAt.toDate().toLocaleDateString()}</span>
       <span class="${mov.tipo === "Ingreso" ? "tipo-verde" : "tipo-rojo"}">${mov.tipo}</span>
       <span>${mov.detalle}</span>
-      <span>$${formatoMiles(parseInt(mov.monto))}</span>
+      <span>$${formatoMiles(mov.monto)}</span>
     `;
 
     historialEl.appendChild(li);
   });
+
+  btnNext.disabled = semanaActualOffset === 0;
+}
+
+// =======================================================
+// 📡 DATOS DESDE FIRESTORE
+// =======================================================
+window.addEventListener("firestoreMovements", (e) => {
+  todosLosMovimientos = e.detail;
+
+  saldo = todosLosMovimientos.reduce((acc, m) => {
+    return m.tipo === "Ingreso" ? acc + m.monto : acc - m.monto;
+  }, 0);
+
+  actualizarSaldo();
+  renderSemana();
 });
