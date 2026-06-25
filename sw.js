@@ -1,4 +1,4 @@
-const CACHE_NAME = "caja-v1";
+const CACHE_NAME = "caja-v4";
 const FILES_TO_CACHE = [
   "./",
   "./index.html",
