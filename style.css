@@ -1,5 +1,10 @@
+/* =====================================================
+   BALANCE DE CAJA — Estilos
+   Paleta: Azul institucional #0033aa, blanco, grises
+===================================================== */
+
 /* ===== Reset ===== */
-* {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -11,184 +16,287 @@ html, body {
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: white;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f0f4ff;
+  color: #1a1a2e;
   display: flex;
-  justify-content: center;
-  width: 100%;
-  color: #1a1a1a;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* ===== Contenedor ===== */
-.container {
-  width: 100%;
-  max-width: 100%;
-  padding: 20px;
-  margin-top: 96px;
-}
-
-/* ======================================================
-   HEADER — Logo izquierda + título centrado real
-====================================================== */
+/* =====================================================
+   HEADER
+===================================================== */
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 88px;
-  background: linear-gradient(135deg, #0033aa, #001f66);
+  height: 72px;
+  background: linear-gradient(135deg, #0033aa 0%, #001f66 100%);
   display: flex;
+  align-items: center;
   justify-content: center;
   z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 16px rgba(0, 51, 170, 0.25);
 }
 
 .header-inner {
   position: relative;
   width: 100%;
-  max-width: 1400px;
+  max-width: 960px;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
 }
 
-/* Logo correctamente alineado */
 .logo {
   position: absolute;
-  left: 24px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 48px;
+  left: 20px;
+  height: 44px;
   width: auto;
 }
 
-/* Título centrado horizontal y vertical */
 .title {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 700;
   color: white;
-  letter-spacing: 0.4px;
-  text-align: center;
-  white-space: nowrap;
+  letter-spacing: 0.5px;
   pointer-events: none;
 }
 
-/* ===== Saldo ===== */
+/* =====================================================
+   CONTENEDOR PRINCIPAL
+===================================================== */
+.container {
+  width: 100%;
+  max-width: 960px;
+  padding: 24px 20px 40px;
+  margin-top: 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* =====================================================
+   TARJETA SALDO
+===================================================== */
 .saldo-card {
-  background: #f4f4f4;
-  padding: 14px;
-  border-radius: 12px;
-  margin-bottom: 18px;
-  text-align: center;
-  border-left: 5px solid #0033aa;
+  background: linear-gradient(135deg, #0033aa, #001f66);
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(0, 51, 170, 0.2);
 }
 
 .saldo-card h2 {
-  font-size: 14px;
-  color: #0033aa;
-  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .saldo-valor {
-  font-size: 26px;
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
-.saldo-positivo { color: #1f8f2f; }
-.saldo-negativo { color: #d93939; }
+.saldo-positivo { color: #4ade80; }
+.saldo-negativo { color: #f87171; }
 
-/* ===== Caja Sección ===== */
+/* =====================================================
+   SECCIONES
+===================================================== */
 .section-box {
-  background: #fff;
-  padding: 14px;
-  border-radius: 12px;
-  margin-bottom: 16px;
-  border: 1px solid #e8eefc;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f8;
 }
 
 .section-box h2 {
-  font-size: 15px;
+  font-size: 13px;
+  font-weight: 700;
   color: #0033aa;
-  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e8eefc;
 }
 
-/* ===== Checkbox WhatsApp ===== */
+/* =====================================================
+   FORMULARIO REGISTRO
+===================================================== */
 .check-label {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 10px;
-  font-size: 14px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
 }
 
-/* ===== FORMULARIO ===== */
+.check-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #0033aa;
+}
+
 .form-row {
   display: flex;
-  gap: 12px;
-  align-items: center;
+  gap: 16px;
+  align-items: flex-start;
 }
 
 .inputs-col {
-  width: 65%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
 .small-input {
-  height: 34px;
-  padding: 6px 8px;
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
   font-size: 14px;
-  border-radius: 8px;
-  border: 1px solid #cddaf8;
+  border-radius: 10px;
+  border: 1.5px solid #d0daf8;
+  background: #f8faff;
+  color: #1a1a2e;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
 }
 
-/* Botones */
-.button-box {
-  width: 35%;
+.small-input:focus {
+  border-color: #0033aa;
+  box-shadow: 0 0 0 3px rgba(0, 51, 170, 0.1);
+  background: #fff;
+}
+
+.small-input::placeholder {
+  color: #9baac8;
+}
+
+.campos-gasto {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 8px;
+  gap: 10px;
+}
+
+/* Botones Ingreso / Gasto */
+.button-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 120px;
 }
 
 .btn {
-  height: 32px;
+  height: 40px;
   width: 100%;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   color: white;
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  letter-spacing: 0.3px;
+  transition: opacity 0.15s, transform 0.1s;
 }
 
-.ingreso { background: #1f8f2f; }
-.gasto   { background: #d93939; }
+.btn:hover  { opacity: 0.9; }
+.btn:active { transform: scale(0.97); }
 
-/* ===== TABLA HISTORIAL ===== */
+.ingreso { background: linear-gradient(135deg, #16a34a, #15803d); }
+.gasto   { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+
+/* =====================================================
+   FILTROS
+===================================================== */
+.filtros {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.filtros .small-input {
+  width: 100%;
+}
+
+.btn-limpiar {
+  grid-column: 1 / -1;
+  height: 36px;
+  border: 1.5px solid #0033aa;
+  border-radius: 10px;
+  background: transparent;
+  color: #0033aa;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-limpiar:hover {
+  background: #0033aa;
+  color: white;
+}
+
+.filtro-info {
+  font-size: 12px;
+  color: #0033aa;
+  font-weight: 600;
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  background: #e8eefc;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+/* =====================================================
+   TABLA HISTORIAL
+===================================================== */
 .tabla {
   width: 100%;
-  border: 1px solid #d5dfff;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
+  border: 1.5px solid #d0daf8;
+}
+
+.tabla-header,
+.tabla-row {
+  display: grid;
+  grid-template-columns: 90px 70px minmax(0,1.5fr) minmax(0,1fr) 60px 90px;
+  column-gap: 0;
+  align-items: center;
 }
 
 .tabla-header {
-  display: grid;
-  grid-template-columns: 90px 65px 1fr 100px 70px 80px;
-  column-gap: 12px;
-  background: #0033aa;
+  background: linear-gradient(135deg, #0033aa, #001f66);
   color: white;
   font-weight: 700;
-  padding: 8px 10px;
-  font-size: 14px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 10px 12px;
+}
+
+.tabla-header span,
+.tabla-row span {
+  padding: 0 6px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 
 .tabla-body {
@@ -198,131 +306,137 @@ body {
 }
 
 .tabla-row {
-  display: grid;
-  grid-template-columns: 90px 65px 1fr 100px 70px 80px;
-  column-gap: 12px;
-  padding: 10px 10px;
-  font-size: 14px;
-  border-bottom: 1px solid #e4e8ff;
+  padding: 10px 12px;
+  font-size: 13px;
+  border-bottom: 1px solid #edf0fc;
+  transition: background 0.15s;
 }
 
 .tabla-row:last-child {
   border-bottom: none;
 }
 
-.tabla-row span {
-  display: flex;
-  align-items: center;
+.tabla-row:hover {
+  background: #f5f7ff;
 }
 
-.tipo-verde { color: #1f8f2f; font-weight: 700; }
-.tipo-rojo  { color: #d93939; font-weight: 700; }
+.tipo-verde {
+  color: #16a34a;
+  font-weight: 700;
+}
 
-/* ===== PAGINACIÓN ===== */
+.tipo-rojo {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+/* Columna monto alineada a la derecha */
+.tabla-header span:last-child,
+.tabla-row span:last-child {
+  text-align: right;
+  font-weight: 600;
+}
+
+/* =====================================================
+   PAGINACIÓN
+===================================================== */
 .pagination {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 12px;
+  margin-top: 14px;
   gap: 10px;
 }
 
 .pagination button {
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: none;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #0033aa;
+  background: transparent;
+  color: #0033aa;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.pagination button:hover:not(:disabled) {
   background: #0033aa;
   color: white;
-  font-size: 13px;
-  cursor: pointer;
 }
 
 .pagination button:disabled {
-  background: #9fb3e6;
+  border-color: #c0cce8;
+  color: #c0cce8;
   cursor: not-allowed;
 }
 
 #lblSemana {
   font-weight: 700;
-  font-size: 13px;
-  color: #0033aa;
-}
-
-
-
-/* ===== FILTROS ===== */
-.filtros {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.filtros .small-input {
-  width: 100%;
-}
-
-.btn-limpiar {
-  grid-column: 1 / -1;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 8px;
-  background: #e8eefc;
-  color: #0033aa;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.btn-limpiar:hover {
-  background: #d0dcf8;
-}
-
-.filtro-info {
   font-size: 12px;
   color: #0033aa;
-  margin-bottom: 8px;
-  font-weight: 600;
+  text-align: center;
 }
 
-/* ===== Campos extra gasto ===== */
-.campos-gasto {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 0;
-}
+/* =====================================================
+   RESPONSIVE MOBILE
+===================================================== */
+@media (max-width: 640px) {
 
-/* ======================================================
-   MOBILE
-====================================================== */
-@media (max-width: 768px) {
-
-  .header {
-    height: 64px;
-  }
-
-  .logo {
-    height: 34px;
-    left: 14px;
-  }
-
-  .title {
-    font-size: 18px;
-  }
+  .header { height: 60px; }
+  .logo   { height: 34px; }
+  .title  { font-size: 17px; }
 
   .container {
-    margin-top: 72px;
-    padding: 15px;
+    margin-top: 60px;
+    padding: 16px 12px 32px;
+    gap: 12px;
+  }
+
+  .saldo-card {
+    padding: 16px 18px;
+    border-radius: 12px;
+  }
+
+  .saldo-valor { font-size: 26px; }
+
+  .section-box {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .button-box { min-width: 96px; }
+
+  /* En móvil la tabla scrollea horizontalmente si es necesario */
+  .tabla-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .tabla-header,
   .tabla-row {
-    grid-template-columns: 70px 55px 1fr 80px 55px 65px;
-    column-gap: 6px;
+    grid-template-columns: 78px 58px minmax(80px,1.5fr) minmax(70px,1fr) 46px 74px;
     font-size: 11px;
   }
 
-  .small-input { font-size: 13px; }
-  .btn { font-size: 13px; height: 30px; }
+  .tabla-header {
+    font-size: 10px;
+  }
+
+  .tabla-row {
+    padding: 9px 8px;
+  }
+
+  .tabla-header span,
+  .tabla-row span {
+    padding: 0 3px;
+  }
+
+  .filtros {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .pagination button { font-size: 11px; padding: 6px 10px; }
+  #lblSemana { font-size: 11px; }
 }
