@@ -46,6 +46,10 @@
       <div class="inputs-col">
         <input type="text" inputmode="numeric" placeholder="Monto" id="monto" class="small-input" />
         <input type="text" placeholder="Detalle" id="detalle" class="small-input" />
+        <div id="campos-gasto" class="campos-gasto" style="display:none;">
+          <input type="text" placeholder="Proveedor (opcional)" id="proveedor" class="small-input" />
+          <input type="text" placeholder="SC - Consecutivo (opcional)" id="sc" class="small-input" />
+        </div>
       </div>
 
       <div class="button-box">
@@ -59,13 +63,23 @@
   <section class="section-box">
     <h2>Historial</h2>
 
-    
+    <!-- FILTROS -->
+    <div class="filtros">
+      <input type="text" id="filtroTexto" placeholder="🔍 Buscar en detalle..." class="small-input" />
+      <input type="date" id="filtroFecha" class="small-input" />
+      <input type="text" id="filtroProveedor" placeholder="Proveedor" class="small-input" />
+      <input type="text" id="filtroSC" placeholder="SC" class="small-input" />
+      <button id="btnLimpiarFiltros" class="btn-limpiar">✕ Limpiar</button>
+    </div>
+    <p id="filtroInfo" class="filtro-info" style="display:none;"></p>
 
     <div class="tabla">
       <div class="tabla-header">
         <span>Fecha</span>
         <span>Tipo</span>
         <span>Detalle</span>
+        <span>Proveedor</span>
+        <span>SC</span>
         <span>Monto</span>
       </div>
       <ul id="historial" class="tabla-body"></ul>

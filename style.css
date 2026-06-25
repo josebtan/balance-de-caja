@@ -182,8 +182,8 @@ body {
 
 .tabla-header {
   display: grid;
-  grid-template-columns: 100px 70px 1fr 80px;
-  column-gap: 20px;
+  grid-template-columns: 90px 65px 1fr 100px 70px 80px;
+  column-gap: 12px;
   background: #0033aa;
   color: white;
   font-weight: 700;
@@ -199,8 +199,8 @@ body {
 
 .tabla-row {
   display: grid;
-  grid-template-columns: 100px 70px 1fr 80px;
-  column-gap: 20px;
+  grid-template-columns: 90px 65px 1fr 100px 70px 80px;
+  column-gap: 12px;
   padding: 10px 10px;
   font-size: 14px;
   border-bottom: 1px solid #e4e8ff;
@@ -248,6 +248,51 @@ body {
   color: #0033aa;
 }
 
+
+
+/* ===== FILTROS ===== */
+.filtros {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.filtros .small-input {
+  width: 100%;
+}
+
+.btn-limpiar {
+  grid-column: 1 / -1;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #e8eefc;
+  color: #0033aa;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-limpiar:hover {
+  background: #d0dcf8;
+}
+
+.filtro-info {
+  font-size: 12px;
+  color: #0033aa;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* ===== Campos extra gasto ===== */
+.campos-gasto {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 0;
+}
+
 /* ======================================================
    MOBILE
 ====================================================== */
@@ -273,9 +318,9 @@ body {
 
   .tabla-header,
   .tabla-row {
-    grid-template-columns: 80px 60px 1fr 70px;
-    column-gap: 10px;
-    font-size: 13px;
+    grid-template-columns: 70px 55px 1fr 80px 55px 65px;
+    column-gap: 6px;
+    font-size: 11px;
   }
 
   .small-input { font-size: 13px; }

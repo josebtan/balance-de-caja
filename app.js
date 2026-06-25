@@ -13,14 +13,45 @@ const saldoEl = document.getElementById("saldo");
 const historialEl = document.getElementById("historial");
 const montoEl = document.getElementById("monto");
 const detalleEl = document.getElementById("detalle");
+const proveedorEl = document.getElementById("proveedor");
+const scEl = document.getElementById("sc");
+const camposGasto = document.getElementById("campos-gasto");
 const chkWhatsapp = document.getElementById("chkWhatsapp");
+
 
 const btnPrev = document.getElementById("btnPrev");
 const btnNext = document.getElementById("btnNext");
 const lblSemana = document.getElementById("lblSemana");
 
-document.getElementById("btnIngreso").addEventListener("click", () => registrar(true));
-document.getElementById("btnGasto").addEventListener("click", () => registrar(false));
+// Filtros
+const filtroTexto    = document.getElementById("filtroTexto");
+const filtroFecha    = document.getElementById("filtroFecha");
+const filtroProveedor = document.getElementById("filtroProveedor");
+const filtroSC       = document.getElementById("filtroSC");
+const btnLimpiarFiltros = document.getElementById("btnLimpiarFiltros");
+const filtroInfo     = document.getElementById("filtroInfo");
+
+filtroTexto.addEventListener("input", aplicarFiltros);
+filtroFecha.addEventListener("input", aplicarFiltros);
+filtroProveedor.addEventListener("input", aplicarFiltros);
+filtroSC.addEventListener("input", aplicarFiltros);
+
+btnLimpiarFiltros.addEventListener("click", () => {
+  filtroTexto.value = "";
+  filtroFecha.value = "";
+  filtroProveedor.value = "";
+  filtroSC.value = "";
+  aplicarFiltros();
+});
+
+document.getElementById("btnIngreso").addEventListener("click", () => {
+  camposGasto.style.display = "none";
+  registrar(true);
+});
+document.getElementById("btnGasto").addEventListener("click", () => {
+  camposGasto.style.display = "flex";
+  registrar(false);
+});
 
 btnPrev.addEventListener("click", () => {
   semanaActualOffset--;
@@ -63,21 +94,98 @@ async function registrar(esIngreso) {
   const tipo = esIngreso ? "Ingreso" : "Salida";
   const saldoNuevo = esIngreso ? saldo + monto : saldo - monto;
 
+  // Campos extra solo para gastos
+  const proveedor = !esIngreso ? (proveedorEl.value.trim() || "") : "";
+  const sc = !esIngreso ? (scEl.value.trim() || "") : "";
+
   if (chkWhatsapp.checked) {
     const simbolo = esIngreso ? "+" : "-";
-    const msg =
+    let msg =
       `📌 *${tipo} registrado*\n\n` +
       `💵 *Movimiento:* ${simbolo}$${formatoMiles(monto)}\n` +
-      `📝 *Detalle:* ${detalle}\n` +
-      `📊 *Nuevo saldo:* $${formatoMiles(saldoNuevo)}`;
+      `📝 *Detalle:* ${detalle}\n`;
+    if (!esIngreso) {
+      if (proveedor) msg += `🏢 *Proveedor:* ${proveedor}\n`;
+      if (sc) msg += `🔢 *SC:* ${sc}\n`;
+    }
+    msg += `📊 *Nuevo saldo:* $${formatoMiles(saldoNuevo)}`;
 
     window.location.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
   }
 
-  await saveMovementToFirestore({ tipo, monto, detalle });
+  await saveMovementToFirestore({ tipo, monto, detalle, proveedor, sc });
 
   montoEl.value = "";
   detalleEl.value = "";
+  proveedorEl.value = "";
+  scEl.value = "";
+  camposGasto.style.display = "none";
+}
+
+// =======================================================
+// 🔍 FILTROS
+// =======================================================
+function hayFiltrosActivos() {
+  return filtroTexto.value.trim() || filtroFecha.value || filtroProveedor.value.trim() || filtroSC.value.trim();
+}
+
+function aplicarFiltros() {
+  if (!hayFiltrosActivos()) {
+    filtroInfo.style.display = "none";
+    // Restaurar paginación por semana
+    document.querySelector(".pagination").style.display = "flex";
+    renderSemana();
+    return;
+  }
+
+  // Ocultar paginación por semana mientras hay filtros
+  document.querySelector(".pagination").style.display = "none";
+
+  const texto    = filtroTexto.value.trim().toLowerCase();
+  const fecha    = filtroFecha.value; // "YYYY-MM-DD"
+  const proveedor = filtroProveedor.value.trim().toLowerCase();
+  const sc       = filtroSC.value.trim().toLowerCase();
+
+  const resultado = todosLosMovimientos.filter(m => {
+    if (texto && !(m.detalle || "").toLowerCase().includes(texto)) return false;
+
+    if (fecha) {
+      const fechaMov = m.createdAt?.toDate?.();
+      if (!fechaMov) return false;
+      const fechaStr = fechaMov.toISOString().slice(0, 10);
+      if (fechaStr !== fecha) return false;
+    }
+
+    if (proveedor && !(m.proveedor || "").toLowerCase().includes(proveedor)) return false;
+    if (sc && !(m.sc || "").toLowerCase().includes(sc)) return false;
+
+    return true;
+  });
+
+  renderMovimientos(resultado);
+
+  filtroInfo.style.display = "block";
+  filtroInfo.textContent = `${resultado.length} resultado${resultado.length !== 1 ? "s" : ""} encontrado${resultado.length !== 1 ? "s" : ""}`;
+}
+
+function renderMovimientos(lista) {
+  historialEl.innerHTML = "";
+
+  lista.forEach(mov => {
+    const li = document.createElement("li");
+    li.className = "tabla-row";
+
+    li.innerHTML = `
+      <span>${mov.createdAt.toDate().toLocaleDateString()}</span>
+      <span class="${mov.tipo === "Ingreso" ? "tipo-verde" : "tipo-rojo"}">${mov.tipo}</span>
+      <span>${mov.detalle}</span>
+      <span>${mov.proveedor || "-"}</span>
+      <span>${mov.sc || "-"}</span>
+      <span>$${formatoMiles(mov.monto)}</span>
+    `;
+
+    historialEl.appendChild(li);
+  });
 }
 
 // =======================================================
@@ -117,20 +225,7 @@ function renderSemana() {
     return fecha && fecha >= inicio && fecha <= fin;
   });
 
-  filtrados.forEach(mov => {
-    const li = document.createElement("li");
-    li.className = "tabla-row";
-
-    li.innerHTML = `
-      <span>${mov.createdAt.toDate().toLocaleDateString()}</span>
-      <span class="${mov.tipo === "Ingreso" ? "tipo-verde" : "tipo-rojo"}">${mov.tipo}</span>
-      <span>${mov.detalle}</span>
-      <span>$${formatoMiles(mov.monto)}</span>
-    `;
-
-    historialEl.appendChild(li);
-  });
-
+  renderMovimientos(filtrados);
   btnNext.disabled = semanaActualOffset === 0;
 }
 
