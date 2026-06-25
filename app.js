@@ -44,14 +44,8 @@ btnLimpiarFiltros.addEventListener("click", () => {
   aplicarFiltros();
 });
 
-document.getElementById("btnIngreso").addEventListener("click", () => {
-  camposGasto.style.display = "none";
-  registrar(true);
-});
-document.getElementById("btnGasto").addEventListener("click", () => {
-  camposGasto.style.display = "flex";
-  registrar(false);
-});
+document.getElementById("btnIngreso").addEventListener("click", () => registrar(true));
+document.getElementById("btnGasto").addEventListener("click", () => registrar(false));
 
 btnPrev.addEventListener("click", () => {
   semanaActualOffset--;
@@ -119,7 +113,6 @@ async function registrar(esIngreso) {
   detalleEl.value = "";
   proveedorEl.value = "";
   scEl.value = "";
-  camposGasto.style.display = "none";
 }
 
 // =======================================================
@@ -187,6 +180,47 @@ function renderMovimientos(lista) {
     historialEl.appendChild(li);
   });
 }
+
+
+// =======================================================
+// 📡 MONITOREO DE VISITAS — TELEGRAM
+// =======================================================
+async function registrarVisita() {
+  const TELEGRAM_TOKEN = "8838608532:AAEp0ghVD5ZSost_W_KsUsoRtyB_TmyA0Hk";
+  const CHAT_ID = "1467339360";
+
+  try {
+    // Obtener IP e info de red
+    const ipRes = await fetch("https://ipapi.co/json/");
+    const ipData = await ipRes.json();
+
+    const ahora = new Date();
+    const fecha = ahora.toLocaleDateString("es-CO", { timeZone: "America/Bogota" });
+    const hora  = ahora.toLocaleTimeString("es-CO", { timeZone: "America/Bogota" });
+
+    const msg =
+      `👁 *Nueva visita — Balance de Caja*\n\n` +
+      `📅 *Fecha:* ${fecha}\n` +
+      `🕐 *Hora:* ${hora}\n` +
+      `🌐 *IP:* ${ipData.ip || "desconocida"}\n` +
+      `📍 *Ubicación:* ${ipData.city || ""}, ${ipData.country_name || ""}\n` +
+      `📱 *Dispositivo:* ${navigator.userAgent}`;
+
+    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: CHAT_ID,
+        text: msg,
+        parse_mode: "Markdown"
+      })
+    });
+  } catch (e) {
+    // Silencioso — el visitante no debe notar nada
+  }
+}
+
+registrarVisita();
 
 // =======================================================
 // 💰 SALDO
