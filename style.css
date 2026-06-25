@@ -54,17 +54,23 @@ body {
 
 .logo {
   position: absolute;
-  left: 20px;
-  height: 44px;
+  left: 16px;
+  height: 36px;
   width: auto;
+  opacity: 0.92;
 }
 
 .title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   color: white;
   letter-spacing: 0.5px;
   pointer-events: none;
+  /* Evitar solapamiento con logo */
+  padding-left: 100px;
+  padding-right: 16px;
+  text-align: center;
+  width: 100%;
 }
 
 /* =====================================================
@@ -266,18 +272,24 @@ body {
 /* =====================================================
    TABLA HISTORIAL
 ===================================================== */
+.tabla-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  border: 1.5px solid #d0daf8;
+}
+
 .tabla {
   width: 100%;
+  min-width: 520px;
   border-radius: 12px;
   overflow: hidden;
-  border: 1.5px solid #d0daf8;
 }
 
 .tabla-header,
 .tabla-row {
   display: grid;
-  grid-template-columns: 90px 70px minmax(0,1.5fr) minmax(0,1fr) 60px 90px;
-  column-gap: 0;
+  grid-template-columns: 88px 68px 1fr 110px 60px 88px;
   align-items: center;
 }
 
@@ -285,18 +297,27 @@ body {
   background: linear-gradient(135deg, #0033aa, #001f66);
   color: white;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 10px 12px;
+  padding: 10px 0;
+  white-space: nowrap;
 }
 
 .tabla-header span,
 .tabla-row span {
-  padding: 0 6px;
-  word-break: break-word;
-  overflow-wrap: break-word;
+  padding: 0 10px;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Detalle y proveedor sí pueden envolver */
+.tabla-row span:nth-child(3),
+.tabla-row span:nth-child(4) {
+  white-space: normal;
+  word-break: break-word;
 }
 
 .tabla-body {
@@ -306,7 +327,7 @@ body {
 }
 
 .tabla-row {
-  padding: 10px 12px;
+  padding: 10px 0;
   font-size: 13px;
   border-bottom: 1px solid #edf0fc;
   transition: background 0.15s;
@@ -407,30 +428,7 @@ body {
 
   .button-box { min-width: 96px; }
 
-  /* En móvil la tabla scrollea horizontalmente si es necesario */
-  .tabla-wrapper {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .tabla-header,
-  .tabla-row {
-    grid-template-columns: 78px 58px minmax(80px,1.5fr) minmax(70px,1fr) 46px 74px;
-    font-size: 11px;
-  }
-
-  .tabla-header {
-    font-size: 10px;
-  }
-
-  .tabla-row {
-    padding: 9px 8px;
-  }
-
-  .tabla-header span,
-  .tabla-row span {
-    padding: 0 3px;
-  }
+  /* La tabla tiene su propio scroll horizontal via tabla-wrapper */
 
   .filtros {
     grid-template-columns: 1fr 1fr;
