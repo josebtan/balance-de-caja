@@ -42,22 +42,22 @@ body {
 }
 
 .header-inner {
-  position: relative;
   width: 100%;
   max-width: 960px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 20px;
+  padding: 0 16px;
+  position: relative;
 }
 
 .logo {
+  height: 38px;
+  width: auto;
+  flex-shrink: 0;
   position: absolute;
   left: 16px;
-  height: 36px;
-  width: auto;
-  opacity: 0.92;
 }
 
 .title {
@@ -65,12 +65,8 @@ body {
   font-weight: 700;
   color: white;
   letter-spacing: 0.5px;
-  pointer-events: none;
-  /* Evitar solapamiento con logo */
-  padding-left: 100px;
-  padding-right: 16px;
   text-align: center;
-  width: 100%;
+  flex: 1;
 }
 
 /* =====================================================
